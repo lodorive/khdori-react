@@ -8,6 +8,7 @@ import Exam06 from './components/Exam06';
 import Exam07 from './components/Exam07';
 import Exam08 from './components/Exam08';
 import Exam09 from './components/Exam09';
+import Exam10 from './components/Exam10';
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
       <div className='my-5'></div>
       <hr/>
       <Exam09/>
+      <div className='my-5'></div>
+      <hr/>
+      <Exam10/>
       <div className='my-5'></div>
     </>
   );
