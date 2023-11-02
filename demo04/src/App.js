@@ -44,7 +44,7 @@ const addTodoList = ()=>{
       ...data, 
       no:no
     } 
-  ])
+  ]);
 
   //초기화
   setData({title:"", type:""});
