@@ -107,11 +107,11 @@ const Exam01 = () => {
     };
     
     //삭제
-    const delectTodo = (target) => {
+    const deleteTodo = (target) => {
         const newTodoList = todoList.filter(todo => todo.no !== target.no);
-        setBackup(newTodoList);
+        setTodoList(newTodoList);
 
-        //빅업 삭제
+        //백업 삭제
         const newBackup = backup.filter(todo => todo.no !== target.no);
         setBackup(newBackup);
     };
@@ -239,7 +239,7 @@ const Exam01 = () => {
                                                             이 반복문에서 사용한 item이라는 객체를 넘기겠다
                                                         */}
                                                     <button className="btn btn-sm btn-danger"
-                                                        >삭제</button>
+                                                        onClick={e=> deleteTodo(todo)}>삭제</button>
                                             </td>
                                             </tr>
                                         )
