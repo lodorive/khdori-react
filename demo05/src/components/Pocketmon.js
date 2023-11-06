@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { FaRegEdit } from "react-icons/fa";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { AiOutlinePlus } from "react-icons/ai";
+import { Modal } from 'bootstrap';
 
 const Pocketmon = (props) => {
     const [pocketmonList, setPocketmonList] = useState([]);
@@ -40,6 +42,26 @@ const Pocketmon = (props) => {
         .catch(err=>{});
     };
 
+    //modal 관련된 처리
+    const bsModal = useRef();
+    const openModal = ()=>{
+        const modal = new Modal(bsModal.current);
+        modal.show();
+    };
+    const closeModal = ()=>{
+        const modal = Modal.getInstance(bsModal.current);
+        modal.hide();
+    };
+
+    //등록과 관련된 state
+    const [pocketmon, setPocketmon] = useState({name:"", type:""});
+    const changePocketmon = (e)=>{
+        setPocketmon({
+            ...pocketmon,
+            [e.target.name] : e.target.value 
+        });
+    };
+
     return (
         <>
 
@@ -50,6 +72,16 @@ const Pocketmon = (props) => {
                 </div>
             </div>
 
+            {/* 추가 버튼 */}
+            <div className='row'>
+                <div className='col text-end'>
+                    <button className='btn btn-success' onClick={openModal}>
+                    <AiOutlinePlus className='text-waring'/>추가
+                    </button>
+                </div>
+            </div>
+
+            {/* 출력 화면 */}
             <div className='row mt-4'>
                 <div className='col'>
                     <table className='table table-hover'>
@@ -69,13 +101,49 @@ const Pocketmon = (props) => {
                                     <td>{pocketmon.name}</td>
                                     <td>{pocketmon.type}</td>
                                     <td>
-                                        <FaRegEdit className='text-waring'/>
+                                        <FaRegEdit className='text-waring me-1'/>
                                         <FaRegTrashAlt className='text-danger' onClick={e=>deletePoketmon(pocketmon)}/>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+             {/* <!-- Modal --> */}
+       <div className="modal fade" ref={bsModal}
+            data-bs-backdrop="static" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">포켓몬 등록</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+
+                            <div className='row'>
+                                <div className='col'>
+                                    <label className='form-label'>이름</label>
+                                    <input type="text" name="name" className='form-control'
+                                            value={pocketmon.name} onChange={changePocketmon}/>
+                                </div>
+                            </div>
+
+                            <div className='row mt-4'>
+                                <div className='col'>
+                                <label className='form-label'>속성</label>
+                                    <input type="text" name="type" className='form-control'
+                                            value={pocketmon.type} onChange={changePocketmon}/>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="modal-footer">
+                          <button className='btn btn-secondary' onClick={closeModal}>닫기</button>
+                          <button className='btn btn-success'>저장</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 

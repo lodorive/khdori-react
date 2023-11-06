@@ -8,7 +8,8 @@ import "./Book.css";
 const Book = (props)=>{
 
     const [bookList, setBookList] = useState([]);
-    useEffect(()=>{
+
+    const loadBook = ()=>{
         //서버에 있는 도서 정보를 불러와서 state에 반영하는 코드 
         axios({
             url: "http://localhost:8080/book/",
@@ -20,7 +21,26 @@ const Book = (props)=>{
         .catch(err=> {
             window.alert("통신 오류 발생")
         });
+    }
+
+    useEffect(()=>{
+        loadBook();
     }, []);
+
+    const deleteBook = (book)=>{
+        const choice = window.confirm("정말 삭제하시겠습니까?");
+        if(choice === false) return;
+
+        axios({
+            // url:`http://localhost:8080/book/${book.bookId}`,
+            url:"http://localhost:8080/book/"+book.bookId,
+            method:"delete"
+        })
+        .then(response => {
+            loadBook();
+        })
+        .catch(err=>{})
+    }
 
     return(
         <>
@@ -72,8 +92,8 @@ const Book = (props)=>{
                                 <td className='pc-only'>{book.bookPageCount}</td>
                                 <td className='pc-only'>{book.bookGenre}</td>
                                 <td>
-                                    <button className='btn btn-sm btn-primary me-1'><FaRegEdit/></button>
-                                    <button className='btn btn-sm btn-danger'><FaRegTrashAlt/></button>
+                                <FaRegEdit className='text-waring'/>
+                                <FaRegTrashAlt className='text-danger' onClick={e=>deleteBook(book)}/>
                                 </td>
                             </tr>
                             )
