@@ -4,10 +4,11 @@ import 'bootstrap/dist/js/bootstrap.js';
 const Menu = (props) => {
     const location = useLocation();
     // console.log(location.pathname);
-
+    
     return (
-        <>
-            <nav className="navbar navbar-expand-lg bg-success" data-bs-theme="light">
+    
+    <>
+            <nav className="navbar navbar-expand-lg bg-success fixed-top" data-bs-theme="light">
                 <div className="container-fluid">
                     <NavLink className="navbar-brand" to="/">KH정보교육원</NavLink>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
