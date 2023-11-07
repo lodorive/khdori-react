@@ -12,7 +12,7 @@ const Pocketmon = (props) => {
     //목록은 함수로 만들어놓는게 좋다
     const loadPocketmon = ()=>{
         axios({
-            url: "http://localhost:8080/pocketmon/",
+            url: `${process.env.REACT_APP_REST_API_URL}/pocketmon/`,
             method: "get"
         })
             .then(response => {
@@ -33,7 +33,7 @@ const Pocketmon = (props) => {
 
         //axios({옵션}).then(성공시 실행할 함수).catch(실패 시 실행할 삼수)
         axios({
-            url:`http://localhost:8080/pocketmon/${pocketmon.no}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/pocketmon/${pocketmon.no}`,
             method:"delete"
         })
         .then(response=>{
@@ -76,7 +76,7 @@ const Pocketmon = (props) => {
     const savePocketmon = ()=>{
         //입력값 검사 후 차단 코드 추가
         axios({
-            url:"http://localhost:8080/pocketmon/",
+            url:`${process.env.REACT_APP_REST_API_URL}/pocketmon/`,
             method:"post",
             data:pocketmon
         })
@@ -86,6 +86,7 @@ const Pocketmon = (props) => {
         })
         .catch(err=>{
         });
+    }
         
         //포켓몬스터 수정 창 열기
         //- target은 수정 버튼을 누른 행의 포켓몬스터 정보
@@ -97,21 +98,24 @@ const Pocketmon = (props) => {
 
         //포켓몬스터 수정 처리
         const updatePocketmon = ()=>{
-            //검사 후 차단 처리
-            
+            //검사 후 차단 처리          
             const {no, name, type} = pocketmon;
             axios({
-                url:"http://localhost:8080/pocketmon/"+no,
+                url:`${process.env.REACT_APP_REST_API_URL}/pocketmon/${no}`,
                 method:"put",
                 data:{
-                    nama: name,
+                    name: name,
                     type: type
                 }
-            }).then(response=>{
+            })
+            .then(response=>{
                 loadPocketmon();
                 closeModal();
-            }).catch(err=>{});
-        }
+            })
+            .catch(err=>{
+
+            });
+        };
 
     return (
         <>
@@ -205,7 +209,7 @@ const Pocketmon = (props) => {
                     </div>
                 </div>
             </div>
-            
+
         </>
     );
 };
