@@ -85,9 +85,33 @@ const Pocketmon = (props) => {
             closeModal(); //모달 닫기
         })
         .catch(err=>{
-
         });
-    };
+        
+        //포켓몬스터 수정 창 열기
+        //- target은 수정 버튼을 누른 행의 포켓몬스터 정보
+        //- target의 정보를 pocketmon으로 카피 후 모달 열기
+        const editPocketmon = (target)=>{
+            setPocketmon({...target}); //카피
+            openModal();
+        };
+
+        //포켓몬스터 수정 처리
+        const updatePocketmon = ()=>{
+            //검사 후 차단 처리
+            
+            const {no, name, type} = pocketmon;
+            axios({
+                url:"http://localhost:8080/pocketmon/"+no,
+                method:"put",
+                data:{
+                    nama: name,
+                    type: type
+                }
+            }).then(response=>{
+                loadPocketmon();
+                closeModal();
+            }).catch(err=>{});
+        }
 
     return (
         <>
@@ -128,7 +152,9 @@ const Pocketmon = (props) => {
                                     <td>{pocketmon.name}</td>
                                     <td>{pocketmon.type}</td>
                                     <td>
-                                        <FaRegEdit className='text-waring me-1'/>
+
+                                        {/* 아이콘 자리 */}
+                                        <FaRegEdit className='text-waring me-1' onClick={e=>editPocketmon(pocketmon)}/>
                                         <FaRegTrashAlt className='text-danger' onClick={e=>deletePoketmon(pocketmon)}/>
                                     </td>
                                 </tr>
@@ -144,7 +170,9 @@ const Pocketmon = (props) => {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="exampleModalLabel">포켓몬 등록</h1>
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">
+                            {pocketmon.no === undefined ? '신규 몬스터 등록' : `${pocketmon.no}번 몬스터 수정`}
+                            </h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
@@ -168,12 +196,16 @@ const Pocketmon = (props) => {
                         </div>
                         <div className="modal-footer">
                           <button className='btn btn-secondary' onClick={closeModal}>닫기</button>
-                          <button className='btn btn-success' onClick={savePocketmon}>저장</button>
+                          {pocketmon.no === undefined ? 
+                              <button className='btn btn-success' onClick={savePocketmon}>저장</button> 
+                              : 
+                              <button className='btn btn-success' onClick={updatePocketmon}>수정</button>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
-
+            
         </>
     );
 };
